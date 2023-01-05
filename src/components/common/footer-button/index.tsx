@@ -1,9 +1,9 @@
+import React from 'react'
 import { Button } from 'antd'
 import { useRecoilState } from 'recoil'
-import { commonStore } from '@/store'
 import { useNavigate } from 'react-router-dom'
+import { commonStore } from '@/store'
 import './index.less'
-import React from 'react'
 
 type Iprops = {
   renderLeft?: React.ReactNode

@@ -2,9 +2,10 @@ import { join, resolve } from 'path'
 import fs from 'fs'
 import legacy from '@vitejs/plugin-legacy'
 import { defineConfig } from 'vite'
-import reactPlugin from '@vitejs/plugin-react'
+import reactPlugin from '@vitejs/plugin-react-swc'
 import VitePluginRouters from './plugins/vite-plugin-routers'
 import VitePluginStyleImport from './plugins/vite-plugin-style-import'
+import VitePluginAsyncCatch from './plugins/vite-plugin-async-catch'
 import proxyConfig from './proxy.config'
 
 const CWD = process.cwd()
@@ -49,6 +50,7 @@ export default defineConfig(({ mode }) => {
     },
 
     plugins: [
+      VitePluginAsyncCatch({}),
       legacy({}),
       reactPlugin(),
       VitePluginRouters({ watch: isDev }),

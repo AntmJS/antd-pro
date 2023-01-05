@@ -19,7 +19,6 @@ import {
   message,
 } from 'antd'
 import { PicRightOutlined } from '@ant-design/icons'
-import Draggable from 'react-draggable'
 import { PAGE_CONFIG } from './config'
 import './index.less'
 
@@ -40,19 +39,22 @@ export default function PageInsert() {
   const treeRef = useRef<any>()
   const [activeKey, setActiveKey] = useState<any>()
 
-  const handSelect = useCallback(function (_, _node) {
-    const node = _node.node
-    form.resetFields()
-    if (node) {
-      form.setFieldsValue({
-        target: '/src' + node.path.split('src')[1],
-        originPath: node.path,
-      })
-      setSelectData(node)
-    } else {
-      setSelectData(node)
-    }
-  }, [])
+  const handSelect = useCallback(
+    function (_, _node) {
+      const node = _node.node
+      form.resetFields()
+      if (node) {
+        form.setFieldsValue({
+          target: '/src' + node.path.split('src')[1],
+          originPath: node.path,
+        })
+        setSelectData(node)
+      } else {
+        setSelectData(node)
+      }
+    },
+    [form],
+  )
 
   const renderPageConfig = useCallback(function (config, type, i) {
     return config.map((it, x) => {
@@ -95,52 +97,54 @@ export default function PageInsert() {
     })
   }, [])
 
-  const submitAction = useCallback(function () {
-    form
-      .validateFields()
-      .then((res) => {
-        fetch(`http://localhost:${SERVER_PORT}/dir/update`, {
-          method: 'post',
-          body: JSON.stringify(res),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              message.success('更新成功')
-              treeRef.current?.getTreeData()
-              setShow(false)
-              const newUrl = res.addDir
-                ? `${res.target.replace('/src/pages', '')}/${res.addDir}/${
-                    res.pageTypes[0]
-                  }`
-                : res.target.replace('/src/pages', '') + `/${res.pageTypes[0]}`
-              setTimeout(() => {
-                window.location.href = newUrl
-              }, 100)
-            } else message.error(data.message || '服务异常')
+  const submitAction = useCallback(
+    function () {
+      form
+        .validateFields()
+        .then((res) => {
+          fetch(`http://localhost:${SERVER_PORT}/dir/update`, {
+            method: 'post',
+            body: JSON.stringify(res),
           })
-      })
-      .catch((err) => {
-        if (err.errorFields && err.errorFields.length > 0) {
-          if (err.errorFields[0].name.length > 1) {
-            const pageTab = err.errorFields[0].name[0]
-            setActiveKey(pageTab)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                message.success('更新成功')
+                treeRef.current?.getTreeData()
+                setShow(false)
+                const newUrl = res.addDir
+                  ? `${res.target.replace('/src/pages', '')}/${res.addDir}/${
+                      res.pageTypes[0]
+                    }`
+                  : res.target.replace('/src/pages', '') +
+                    `/${res.pageTypes[0]}`
+                setTimeout(() => {
+                  window.location.href = newUrl
+                }, 100)
+              } else message.error(data.message || '服务异常')
+            })
+        })
+        .catch((err) => {
+          if (err.errorFields && err.errorFields.length > 0) {
+            if (err.errorFields[0].name.length > 1) {
+              const pageTab = err.errorFields[0].name[0]
+              setActiveKey(pageTab)
+            }
           }
-        }
-      })
-  }, [])
+        })
+    },
+    [form],
+  )
 
   return (
     <>
-      <Draggable>
-        <Button
-          shape="circle"
-          className="components-page-insert-btn"
-          onClick={() => setShow(true)}
-          type="primary"
-          icon={<PicRightOutlined />}
-        ></Button>
-      </Draggable>
+      <Button
+        shape="circle"
+        className="components-page-insert-btn"
+        onClick={() => setShow(true)}
+        type="primary"
+        icon={<PicRightOutlined />}
+      ></Button>
       <Modal
         className="components-page-insert"
         title="页面插入"

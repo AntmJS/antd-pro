@@ -56,7 +56,7 @@ export default class RenderComponent extends Component<Iprops, IState> {
 
   result(): JSX.Element {
     const { Comp, originTitle } = this.state
-    const { component, noTokenPages, redirect, ...oprops } = this.props
+    const { ...oprops } = this.props
     if (Comp) {
       document.title = originTitle || '-'
       return <Comp {...oprops} />

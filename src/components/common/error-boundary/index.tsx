@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import { monitor } from '@/trace/index'
 import { EMlf } from '@antmjs/trace/dist/h5'
+import { monitor } from '@/trace/index'
 
 export default class ErrorBoundary extends PureComponent<{
   setError: any

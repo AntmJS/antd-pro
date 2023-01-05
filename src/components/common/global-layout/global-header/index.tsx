@@ -158,7 +158,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
         }
       }
     },
-    [appType],
+    [appType, navigate],
   )
 
   // 线上环境且传入了主题变量对象才开启菜单
@@ -194,6 +194,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
       const currentResCode = location.pathname.split('/')[1] || ''
       tabChange(currentResCode, true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const tabChange = (key, notChangeUrl?: boolean) => {

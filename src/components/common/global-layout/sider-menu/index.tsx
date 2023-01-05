@@ -128,7 +128,7 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
 
     setSelectedKeys(arr)
     activeKey && setOpenKeys([activeKey])
-  }, [menuData, location.pathname])
+  }, [menuData])
 
   // 渲染二级菜单
   const renderMenuItem = useCallback(
@@ -144,7 +144,7 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
         </Menu.Item>
       )
     },
-    [history, selectedKeys],
+    [props],
   )
 
   // 渲染一级菜单
